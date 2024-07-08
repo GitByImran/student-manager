@@ -1,0 +1,12 @@
+.form-check,
+.form-check-inline,
+.form-check-block {
+    user-select: none !important;
+}
+
+.subjects-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
