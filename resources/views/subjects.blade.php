@@ -18,8 +18,17 @@
     <div class="container mt-4">
         <div class="my-4 d-flex align-items-center justify-content-between">
             <h5 class="text-secondary"><i class="fa-regular fa-folder mr-2"></i>Subjects</h5>
-            <form class="form-inline">
-                <input class="form-control mr-2" type="search" placeholder="Search subjects" aria-label="Search">
+            <form action="/filterSubjects" method="GET" class="form-inline">
+                <input class="form-control mr-2" type="search" name="name" placeholder="Search subjects" aria-label="Search" value="{{ request()->get('name') }}">
+                <select class="form-control mr-2" name="class">
+                    <option value="">All Classes</option>
+                    <option value="6" {{ request()->get('class') == '6' ? 'selected' : '' }}>Class 6</option>
+                    <option value="7" {{ request()->get('class') == '7' ? 'selected' : '' }}>Class 7</option>
+                    <option value="8" {{ request()->get('class') == '8' ? 'selected' : '' }}>Class 8</option>
+                    <option value="9C" {{ request()->get('class') == '9C' ? 'selected' : '' }}>Class 9-10 (Commerce)</option>
+                    <option value="9A" {{ request()->get('class') == '9A' ? 'selected' : '' }}>Class 9-10 (Arts)</option>
+                    <option value="9S" {{ request()->get('class') == '9S' ? 'selected' : '' }}>Class 9-10 (Science)</option>
+                </select>
                 <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
         </div>
@@ -28,11 +37,14 @@
             <!-- Add Subject Form -->
             <div class="col-md-4">
                 <div class="card mb-4">
-                    <div class="card-header bg-primary">
+                    <div class="card-header bg-primary d-flex align-items-center justify-content-between">
                         <h5 class="m-0 p-0 text-white">New Subject</h5>
+                        @if(Session::has('addSubjectSuccess'))
+                        <p class="p-0 m-0 px-2 py-1 bg-light text-success" style="font-weight: 600;"><i class="fas fa-check mr-1"></i>{{Session::get('addSubjectSuccess')}}</p>
+                        @endif
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST">
+                        <form action="/newSubjectData" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Subject Name</label>
@@ -57,15 +69,15 @@
                                     <label class="form-check-label" for="class8">Class 8</label>
                                 </div>
                                 <div class="form-check form-check-block">
-                                    <input class="form-check-input" type="checkbox" id="class9Science" value="9S" name="classes[]">
+                                    <input class="form-check-input" type="checkbox" id="class9Science" value="9/10-S" name="classes[]">
                                     <label class="form-check-label" for="class9Science">Class 9-10 (Science)</label>
                                 </div>
                                 <div class="form-check form-check-block">
-                                    <input class="form-check-input" type="checkbox" id="class9Arts" value="9A" name="classes[]">
+                                    <input class="form-check-input" type="checkbox" id="class9Arts" value="9/10-A" name="classes[]">
                                     <label class="form-check-label" for="class9Arts">Class 9-10 (Arts)</label>
                                 </div>
                                 <div class="form-check form-check-block">
-                                    <input class="form-check-input" type="checkbox" id="class9Commerce" value="9C" name="classes[]">
+                                    <input class="form-check-input" type="checkbox" id="class9Commerce" value="9/10-C" name="classes[]">
                                     <label class="form-check-label" for="class9Commerce">Class 9-10 (Commerce)</label>
                                 </div>
                             </div>
@@ -92,158 +104,23 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(isset($subjects))
+                                @foreach($subjects as $subject)
                                 <tr>
-                                    <td>Bangla</td>
-                                    <td>BAN101</td>
-                                    <td>6-7-8</td>
+                                    <td>{{ $subject->name }}</td>
+                                    <td>{{ $subject->code }}</td>
+                                    <td>{{ implode(', ', $subject->class) }}</td>
                                     <td class="subjects-actions">
                                         <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
                                         <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
                                         <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>English</td>
-                                    <td>ENG102</td>
-                                    <td>6-7-8</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Mathematics</td>
-                                    <td>MATH103</td>
-                                    <td>6-7-8, 9-10</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Religion</td>
-                                    <td>REL104</td>
-                                    <td>6-7-8</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Global Studies</td>
-                                    <td>GST105</td>
-                                    <td>6-7-8</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Physics</td>
-                                    <td>PHY201</td>
-                                    <td>9-10 (Science)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Chemistry</td>
-                                    <td>CHE202</td>
-                                    <td>9-10 (Science)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Biology</td>
-                                    <td>BIO203</td>
-                                    <td>9-10 (Science)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Higher Mathematics</td>
-                                    <td>HMATH204</td>
-                                    <td>9-10 (Science)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Economics</td>
-                                    <td>ECON301</td>
-                                    <td>9-10 (Commerce)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Accounting</td>
-                                    <td>ACCT302</td>
-                                    <td>9-10 (Commerce)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Business Studies</td>
-                                    <td>BST303</td>
-                                    <td>9-10 (Commerce)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>History</td>
-                                    <td>HIST304</td>
-                                    <td>9-10 (Arts)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Geography</td>
-                                    <td>GEOG305</td>
-                                    <td>9-10 (Arts)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Civics</td>
-                                    <td>CIV306</td>
-                                    <td>9-10 (Arts)</td>
-                                    <td class="subjects-actions">
-                                        <a href="" class="text-secondary"><i class="fa-solid fa-circle-info"></i></a>
-                                        <a href="" class="text-info"><i class="fas fa-pen-to-square"></i></a>
-                                        <a href="" class="text-danger"><i class="fas fa-trash"></i></a>
-                                    </td>
-                                </tr>
+                                @endforeach
+                                @endif
                             </tbody>
                         </table>
+                        {{ $subjects->links() }}
                     </div>
                 </div>
             </div>

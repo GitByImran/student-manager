@@ -4,19 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/dashboard.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Dashboard</title>
-    <style>
-        .card {
-            margin-bottom: 20px;
-        }
-
-        .card-header {
-            background-color: #007bff;
-            color: white;
-        }
-    </style>
 </head>
 
 <body>
@@ -28,41 +19,41 @@
             <!-- Students Card -->
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header bg-primary text-white">
                         <h5 class="m-0">Students</h5>
                     </div>
                     <div class="card-body">
                         <h3 class="card-title">150</h3>
                         <p class="card-text">Total number of students.</p>
-                        <a href="#" class="btn btn-primary">View Details</a>
+                        <a href="/students" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>
 
             <!-- Classes Card -->
             <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
                         <h5 class="m-0">Classes</h5>
                     </div>
                     <div class="card-body">
                         <h3 class="card-title">10</h3>
                         <p class="card-text">Total number of classes.</p>
-                        <a href="#" class="btn btn-primary">View Details</a>
+                        <a href="/" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>
 
             <!-- Subjects Card -->
             <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
                         <h5 class="m-0">Subjects</h5>
                     </div>
                     <div class="card-body">
                         <h3 class="card-title">25</h3>
                         <p class="card-text">Total number of subjects.</p>
-                        <a href="#" class="btn btn-primary">View Details</a>
+                        <a href="/subjects" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             </div>
@@ -71,17 +62,17 @@
         <div class="row">
             <!-- Recent Students -->
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
                         <h5 class="m-0">Recent Students</h5>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Class</th>
-                                    <th>Roll</th>
+                                    <th class="border-0">Name</th>
+                                    <th class="border-0">Class</th>
+                                    <th class="border-0">Roll</th>
                                 </tr>
                             </thead>
                             <tbody>

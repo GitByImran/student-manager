@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\adminController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\subjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +28,14 @@ Route::middleware(['admin'])->group(function () {
     Route::get('subjects', function () {
         return view('subjects');
     });
+
+    Route::post('newStudentData', [StudentController::class, 'addStudent']);
+    Route::get('students', [StudentController::class, 'getStudent']);
+    Route::get('filterStudents', [StudentController::class, 'filterStudents']);
+
+    Route::post('newSubjectData', [SubjectController::class, 'addSubject']);
+    Route::get('subjects', [SubjectController::class, 'getSubjects']);
+    Route::get('filterSubjects', [SubjectController::class, 'filterSubjects']);
 });
 
 Route::get('login', function () {

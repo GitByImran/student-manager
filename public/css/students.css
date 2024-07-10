@@ -4,3 +4,23 @@
     align-items: center;
     gap: 10px;
 }
+
+.filter-input {
+    max-width: 100px !important;
+}
+
+.img-preview {
+    max-width: 60px;
+    max-height: 60px;
+    padding: 0px;
+    object-fit: cover;
+    object-position: top;
+    overflow: hidden;
+    border-radius: 5px;
+    border: 1px solid #c9c9c9;
+}
+
+.pagination {
+    width: fit-content;
+    margin: 0 auto;
+}

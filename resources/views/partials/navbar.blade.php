@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{asset('css/navbar.css')}}">
+<link rel="stylesheet" href="css/navbar.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <nav class="sticky-top navbar navbar-expand-lg navbar-light bg-light py-3">
@@ -26,7 +26,7 @@
             <li class="nav-item d-flex align-items-center gap-2 text-success mx-4">
                 <i class="fa fa-user mr-2"></i> <span>{{ session('admin_email') }}</span>
             </li>
-            <li class="nav-item btn btn-primary px-4 ml-2" id="authButton">
+            <li class="nav-item btn btn-primary px-4" id="authButton">
                 <a class="nav-link" href="/logout">Logout</a>
             </li>
             @endif
