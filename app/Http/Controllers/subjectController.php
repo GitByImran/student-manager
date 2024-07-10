@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\studentModel;
 use App\Models\SubjectModel;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class SubjectController extends Controller
         $subject->class = $req->classes;
         $subject->save();
 
-        return back()->with('addSubjectSuccess', "Subject added successfully");
+        return back()->with('addSubjectSuccess', "Subject added");
     }
 
     public function getSubjects(Request $req)
@@ -57,5 +58,24 @@ class SubjectController extends Controller
 
         $subjects = $query->paginate(20);
         return view('subjects', ['subjects' => $subjects]);
+    }
+
+    public function updateSubject(Request $req)
+    {
+        $subject = SubjectModel::findOrFail($req->id);
+        $subject->name = $req->name;
+        $subject->code = $req->code;
+        $subject->class = $req->classes;
+        $subject->save();
+
+        return back()->with('updateSubjectSuccess', "Subject updated");
+    }
+
+    public function deleteSubject($id)
+    {
+        $subject = SubjectModel::findOrFail($id);
+        $subject->delete();
+
+        return back()->with('deleteSubjectSuccess', "Subject deleted");
     }
 }

@@ -11,11 +11,9 @@ class StudentController extends Controller
     {
         $table = new studentModel();
 
-        // Handle file upload
         $photo_path = "img_" . time() . '.' . $req->photo->extension();
         $req->photo->move(public_path('images'), $photo_path);
 
-        // Save student data
         $table->class = $req->class;
         $table->name = $req->name;
         $table->age = $req->age;
@@ -28,10 +26,8 @@ class StudentController extends Controller
 
     public function getStudent(Request $req)
     {
-        // Retrieve student records without filters
         $studentRecords = studentModel::paginate(20);
 
-        // Pass the student records to the view
         return view('students', ['students' => $studentRecords]);
     }
 
@@ -39,7 +35,6 @@ class StudentController extends Controller
     {
         $query = studentModel::query();
 
-        // Apply filters if they are present
         if ($req->filled('name')) {
             $query->where('name', 'like', '%' . $req->input('name') . '%');
         }
@@ -53,11 +48,37 @@ class StudentController extends Controller
             $query->where('class', $req->input('class'));
         }
 
-        // Retrieve filtered student records
         $studentRecords = $query->paginate(20);
 
-        // Pass the filtered student records to the view
         return view('students', ['students' => $studentRecords]);
     }
+
+    public function updateStudent(Request $req)
+    {
+        $student = studentModel::findOrFail($req->id);
+
+        if ($req->hasFile('photo')) {
+            $photo_path = "img_" . time() . '.' . $req->photo->extension();
+            $req->photo->move(public_path('images'), $photo_path);
+            $student->photo = $photo_path;
+        }
+
+        $student->name = $req->name;
+        $student->class = $req->class;
+        $student->age = $req->age;
+        $student->gender = $req->gender;
+        $student->save();
+
+        return back()->with('updateStudentSuccess', "Student updated");
+    }
+
+    public function deleteStudent($id)
+    {
+        $student = studentModel::findOrFail($id);
+        $student->delete();
+
+        return back()->with('deleteStudentSuccess', "Student deleted");
+    }
+
 }
 
