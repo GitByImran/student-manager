@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\adminModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class adminController extends Controller
@@ -13,9 +14,9 @@ class adminController extends Controller
         $email = $req->email;
         $password = $req->password;
 
-        $adminRecord = adminModel::where('email', $email)->where('password', $password)->first();
+        $adminRecord = adminModel::where('email', $email)->first();
 
-        if (!$adminRecord) {
+        if (!$adminRecord || !Hash::check($password, $adminRecord->password)) {
             return redirect('/login')->with('login_error', 'Invalid Credentials!');
         } else {
             Session::put('admin_email', $adminRecord->email);
