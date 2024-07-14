@@ -6,9 +6,7 @@ use App\Http\Controllers\subjectController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['admin'])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard');
-    });
+    Route::view('/', 'dashboard');
 
     Route::get('students', function () {
         return view('students');
@@ -39,4 +37,4 @@ Route::get('login', function () {
     return view('loginForm');
 });
 
-Route::post('process_login', [adminController::class, 'rememberAdmin']);
+Route::post('process_login', [adminController::class, 'rememberAdmin'])->name('process_login');

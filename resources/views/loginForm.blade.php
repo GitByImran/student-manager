@@ -13,7 +13,7 @@
 <body>
     <div class="login-card bg-white">
         <h4 class="text-center text-secondary mb-4">Login to Your Account</h4>
-        <form action="process_login" method="POST">
+        <form action="{{ route('process_login') }}" method="POST">
             @csrf
             <div class="form-group position-relative">
                 <label for="email"><i class="fa fa-envelope text-secondary mr-2"></i>Email address</label>
@@ -26,14 +26,14 @@
             </div>
             <button type="submit" class="btn btn-primary btn-block">Login</button>
         </form>
-        @if(Session::get('login_error'))
-
-        <p id="loginErrorMessage">{{Session('login_error')}}</p>
-
+        @if(Session::has('login_error'))
+        <p id="loginErrorMessage">{{ Session::get('login_error') }}</p>
         @endif
-        <p class="mt-3 text-center">
-            <a href="/forgot-password">Forgot your password?</a>
-        </p>
+
+        @error('login_error')
+        <p id="loginErrorMessage">{{ $message }}</p>
+        @enderror
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

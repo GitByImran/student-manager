@@ -22,14 +22,12 @@
             </li>
 
             <!-- Authentication Link -->
-            @if(session('admin_email'))
             <li class="nav-item d-flex align-items-center gap-2 text-success mx-4">
-                <i class="fa fa-user mr-2"></i> <span>{{ session('admin_email') }}</span>
+                <i class="fa fa-user mr-2"></i> <span>{{Auth::user()->email}}</span>
             </li>
             <li class="nav-item btn btn-primary px-4" id="authButton">
                 <a class="nav-link" href="/logout">Logout</a>
             </li>
-            @endif
         </ul>
     </div>
 </nav>
