@@ -205,3 +205,25 @@
 </script>
 
 @endsection
+
+
+
+<!-- 
+Bangla	BAN101	6, 7, 8, 9/10-S, 9/10-A, 9/10-C
+English	ENG102	6, 7, 8, 9/10-S, 9/10-A, 9/10-C
+Mathematics	MATH103	6, 7, 8, 9/10-A, 9/10-C
+Religion	REL104	6, 7, 8, 9/10-S, 9/10-A, 9/10-C
+Global Studies	GST105	6, 7, 8, 9/10-S, 9/10-A, 9/10-C
+Science	SC106	6, 7, 8, 9/10-A, 9/10-C
+Physics	PHY201	9/10-S
+Chemistry	CHE202	9/10-S
+Biology	BIO203	9/10-S
+Higher Mathematics	HMATH204	9/10-S
+Economics	ECON301	9/10-C
+Accounting	ACCT302	9/10-C
+Business Studies	BST303	9/10-C
+History	HIST304	9/10-A
+Geography	GEOG305	9/10-A
+Civics	CIV306	9/10-A
+Agricultural Studies	AGR107	6, 7, 8, 9/10-A, 9/10-C
+-->

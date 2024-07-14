@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\studentModel;
 use App\Models\SubjectModel;
 use Illuminate\Http\Request;
 

@@ -23,7 +23,9 @@
 
             <!-- Authentication Link -->
             <li class="nav-item d-flex align-items-center gap-2 text-success mx-4">
+                @auth
                 <i class="fa fa-user mr-2"></i> <span>{{Auth::user()->email}}</span>
+                @endauth
             </li>
             <li class="nav-item btn btn-primary px-4" id="authButton">
                 <a class="nav-link" href="/logout">Logout</a>

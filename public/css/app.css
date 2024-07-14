@@ -1,6 +1,10 @@
+/* dashboard css */
+
 .card {
     margin-bottom: 20px;
 }
+
+/* navbar css */
 
 .navbar-brand > span {
     font-size: 25px;
@@ -26,13 +30,14 @@
     font-weight: 600;
 }
 
+/* students and subjects page */
+
 .student-actions {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
 }
-
 
 .img-preview {
     max-width: 60px;
@@ -66,4 +71,37 @@
 .pagination {
     width: fit-content;
     margin: 0 auto;
+}
+
+/* login page */
+
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group #togglePassword {
+    position: absolute;
+    right: 15px;
+    top: calc(70% - 5px);
+    cursor: pointer;
+}
+
+#loginErrorMessage {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: 600;
 }
