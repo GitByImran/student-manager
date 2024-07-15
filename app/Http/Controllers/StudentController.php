@@ -6,6 +6,7 @@ use App\Models\studentModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
@@ -60,21 +61,38 @@ class StudentController extends Controller
     public function updateStudent(Request $req)
     {
         $student = studentModel::findOrFail($req->id);
-
+    
         if ($req->hasFile('photo')) {
             $photo_path = "img_" . time() . '.' . $req->photo->extension();
             $req->photo->move(public_path('images'), $photo_path);
             $student->photo = $photo_path;
         }
 
+        $student->username = $req->username;
         $student->name = $req->name;
         $student->class = $req->class;
         $student->age = $req->age;
         $student->gender = $req->gender;
-        $student->save();
 
-        return back()->with('updateStudentSuccess', "Student updated");
+        if ($req->filled('current_password') && $req->filled('new_password')) {
+            $this->validate($req, [
+                'current_password' => 'required',
+                'new_password' => 'required',
+                'confirm_password' => 'required|same:new_password',
+            ]);
+
+            if (Hash::check($req->current_password, $student->password)) {
+                $student->password = Hash::make($req->new_password);
+                return redirect()->back()->with(['current_password_success' => 'Password Updated.']);
+            } else {
+                return redirect()->back()->with(['current_password_wrong' => 'Current password is incorrect.']);
+            }
+        }
+    
+        $student->save();
+        return redirect()->back()->with('updateStudentSuccess', "Student updated.");
     }
+    
 
     public function deleteStudent($id)
     {
@@ -123,7 +141,6 @@ class StudentController extends Controller
         return view('studentProfile', compact('student'));
     }
 
-
     public function updateStudentProfile(Request $request)
     {
         $student = Auth::guard('student')->user();
@@ -171,7 +188,6 @@ class StudentController extends Controller
             return redirect()->back()->with('updatePasswordError', 'Current password is incorrect.');
         }
     }
-
-
+    
 }
 

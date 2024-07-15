@@ -33,6 +33,18 @@
         </form>
     </div>
 
+    <div class="text-center">
+        @if(Session("updateStudentSuccess"))
+        <h6 class="alert alert-success">{{Session("updateStudentSuccess")}}</h6>
+        @endif
+        @if(Session("current_password_success"))
+        <h6 class="alert alert-success">{{Session("current_password_success")}}</h6>
+        @endif
+        @if(Session("current_password_wrong"))
+        <h6 class="alert alert-danger">{{Session("current_password_wrong")}}</h6>
+        @endif
+    </div>
+
     <div class="row">
         <!-- Add Student Form -->
         <div class="col-md-4">
@@ -52,7 +64,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password">password</label>
-                            <input type="password" name="password" id="password" class="form-control" required>
+                            <input type="password" name="password" id="name" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -100,12 +112,13 @@
             <div class="card">
                 <div class="card-header bg-primary">
                     <h5 class="m-0 p-0 text-white">Students List</h5>
+
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <!-- <th class="border-0">image</th> -->
+                                <th class="border-0">username</th>
                                 <th class="border-0">Name</th>
                                 <th class="border-0">Class</th>
                                 <th class="border-0">Age</th>
@@ -118,6 +131,7 @@
                             @foreach($students as $student)
                             <tr>
                                 <!-- <td><img src="{{ asset('images/' . $student->photo) }}" class="img-thumbnail" style="max-width: 50px;" alt="{{ $student->name }} Photo"></td> -->
+                                <td>{{ $student->username }}</td>
                                 <td>{{ $student->name }}</td>
                                 <td>{{ $student->class }}</td>
                                 <td>{{ $student->age }}</td>
@@ -126,11 +140,10 @@
                                     <a href="#" class="text-secondary view-student-info-btn" data-toggle="modal" data-target="#studentInfoModal" data-id="{{ $student->id }}" data-name="{{ $student->name }}" data-class="{{ $student->class }}" data-age="{{ $student->age }}" data-gender="{{ $student->gender }}" data-photo="{{ $student->photo }}">
                                         <i class="fa-solid fa-circle-info"></i>
                                     </a>
-                                    <a href="#" class="text-info edit-student-btn" data-toggle="modal" data-target="#editStudentModal" data-id="{{ $student->id }}" data-name="{{ $student->name }}" data-class="{{ $student->class }}" data-age="{{ $student->age }}" data-gender="{{ $student->gender }}">
+                                    <a href="#" class="text-info edit-student-btn" data-toggle="modal" data-target="#editStudentModal" data-id="{{ $student->id }}" data-username="{{ $student->username }}" data-name="{{ $student->name }}" data-class="{{ $student->class }}" data-age="{{ $student->age }}" data-gender="{{ $student->gender }}">
                                         <i class="fas fa-pen-to-square"></i>
                                     </a>
                                     <a href="{{ url('deleteStudent/'.$student->id) }}" class="text-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
-                                    <a href="#" class="text-primary student-login-force" data-id="{{ $student->id }}">student login - force</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -187,39 +200,65 @@
                 <form id="editStudentForm" method="POST" action="/updateStudent" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id" id="edit-student-id">
-                    <div class="form-group">
-                        <label for="edit-student-name">Name</label>
-                        <input type="text" class="form-control" id="edit-student-name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-student-class">Class</label>
-                        <select class="form-control" id="edit-student-class" name="class" required>
-                            <option value="6">Class 6</option>
-                            <option value="7">Class 7</option>
-                            <option value="8">Class 8</option>
-                            <option value="9">Class 9</option>
-                            <option value="10">Class 10</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-student-age">Age</label>
-                        <input type="number" class="form-control" id="edit-student-age" name="age" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-student-gender">Gender</label>
-                        <select class="form-control" id="edit-student-gender" name="gender" required>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group d-flex align-items-center justify-content-between">
-                        <div>
-                            <label for="edit-student-photo">Upload Image</label>
-                            <input type="file" class="form-control-file" id="edit-student-photo" name="photo">
+
+                    <div class="row">
+                        <!-- Personal Information Section -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="edit-student-username">Username</label>
+                                <input type="text" class="form-control" id="edit-student-username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-name">Name</label>
+                                <input type="text" class="form-control" id="edit-student-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-class">Class</label>
+                                <select class="form-control" id="edit-student-class" name="class" required>
+                                    <option value="6">Class 6</option>
+                                    <option value="7">Class 7</option>
+                                    <option value="8">Class 8</option>
+                                    <option value="9">Class 9</option>
+                                    <option value="10">Class 10</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-age">Age</label>
+                                <input type="number" class="form-control" id="edit-student-age" name="age" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-gender">Gender</label>
+                                <select class="form-control" id="edit-student-gender" name="gender" required>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group d-flex align-items-center justify-content-between">
+                                <div>
+                                    <label for="edit-student-photo">Upload Image</label>
+                                    <input type="file" class="form-control-file" id="edit-student-photo" name="photo">
+                                </div>
+                                <div>
+                                    <img id="image_preview" class="img-preview" src="images/{{'dummy-avatar.png'}}" alt="Image Preview">
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <img id="image_preview" class="img-preview" src="images/{{'dummy-avatar.png'}}" alt="Image Preview">
+
+                        <!-- Password Section -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="edit-student-curr-password">Current Password</label>
+                                <input type="password" class="form-control" id="edit-student-curr-password" name="current_password">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-new-password">New Password</label>
+                                <input type="password" class="form-control" id="edit-student-new-password" name="new_password">
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-student-conf-password">Confirm Password</label>
+                                <input type="password" class="form-control" id="edit-student-conf-password" name="confirm_password">
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Update Student</button>
@@ -232,37 +271,6 @@
 <!-- Scripts -->
 
 <script>
-    // student profiler
-    document.querySelectorAll('.student-login-force').forEach(function(element) {
-        element.addEventListener('click', function(event) {
-            event.preventDefault();
-            var studentId = this.getAttribute('data-id');
-
-            fetch('/store-student-id', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        id: studentId
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = '/students/profile';
-                    } else {
-                        alert('Failed to store student ID');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred');
-                });
-        });
-    });
-
     // info
     $(document).on('click', '.view-student-info-btn', function() {
         var id = $(this).data('id');
@@ -284,12 +292,14 @@
     // edit
     $(document).on('click', '.edit-student-btn', function() {
         var id = $(this).data('id');
+        var username = $(this).data('username');
         var name = $(this).data('name');
         var classVal = $(this).data('class');
         var age = $(this).data('age');
         var gender = $(this).data('gender');
 
         $('#edit-student-id').val(id);
+        $('#edit-student-username').val(username);
         $('#edit-student-name').val(name);
         $('#edit-student-class').val(classVal);
         $('#edit-student-age').val(age);

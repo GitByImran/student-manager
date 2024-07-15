@@ -7,14 +7,12 @@
 <div class="container mt-4">
     <div class="my-4 d-flex justify-content-between align-items-center">
         <h3>{{ $student->name }}'s Profile</h3>
-        @if(session('force_student_id'))
-        <a href="{{ url()->previous() }}" class="btn btn-light btn-sm">Back</a>
-        @else
+
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-light btn-sm">Logout</button>
         </form>
-        @endif
+
     </div>
 
 

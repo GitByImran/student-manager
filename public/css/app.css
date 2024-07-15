@@ -114,3 +114,8 @@
     max-width: 400px !important;
     margin: 50px auto !important;
 }
+
+.modal-dialog {
+    max-width: 800px !important;
+    width: 100% !important;
+}

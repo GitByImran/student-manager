@@ -33,8 +33,7 @@ Route::middleware(['admin'])->group(function () {
     Route::get('deleteSubject/{id}', [SubjectController::class, 'deleteSubject']);
 
     // student profile - admin force
-    Route::get('students/profile', [StudentController::class, 'profile'])->name('student.profile');
-    Route::post('store-student-id', [adminController::class, 'storeStudentId'])->name('storeStudentId');
+
 
 });
 
