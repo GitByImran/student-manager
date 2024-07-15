@@ -37,4 +37,15 @@ class adminController extends Controller
         $req->session()->regenerateToken();
         return redirect('/login');
     }
+
+    public function storeStudentId(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:students,id'
+        ]);
+
+        session(['force_student_id' => $request->id]);
+
+        return response()->json(['success' => true]);
+    }
 }

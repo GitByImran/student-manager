@@ -31,6 +31,11 @@ Route::middleware(['admin'])->group(function () {
     Route::get('filterSubjects', [SubjectController::class, 'filterSubjects']);
     Route::post('updateSubject', [SubjectController::class, 'updateSubject']);
     Route::get('deleteSubject/{id}', [SubjectController::class, 'deleteSubject']);
+
+    // student profile - admin force
+    Route::get('students/profile', [StudentController::class, 'profile'])->name('student.profile');
+    Route::post('store-student-id', [adminController::class, 'storeStudentId'])->name('storeStudentId');
+
 });
 
 Route::get('login', function () {
@@ -38,3 +43,14 @@ Route::get('login', function () {
 });
 
 Route::post('process_login', [adminController::class, 'rememberAdmin'])->name('process_login');
+
+Route::view('studentLogin', 'studentLoginForm');
+
+Route::post('studentLoginProcess', [StudentController::class, 'login'])->name('student.login.submit');
+
+Route::middleware(['student.auth'])->group(function () {
+    Route::get('students/profile', [StudentController::class, 'showProfile']);
+    Route::post('updateStudentProfile', [StudentController::class, 'updateStudentProfile']);
+    Route::post('updateStudentPassword', [StudentController::class, 'updateStudentPassword']);
+    Route::post('logout', [StudentController::class, 'logout'])->name('logout');
+});

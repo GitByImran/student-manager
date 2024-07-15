@@ -47,6 +47,14 @@
                     <form action="/newStudentData" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
+                            <label for="username">username</label>
+                            <input type="text" name="username" id="username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">password</label>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" name="name" id="name" class="form-control" required>
                         </div>
@@ -122,6 +130,7 @@
                                         <i class="fas fa-pen-to-square"></i>
                                     </a>
                                     <a href="{{ url('deleteStudent/'.$student->id) }}" class="text-danger" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
+                                    <a href="#" class="text-primary student-login-force" data-id="{{ $student->id }}">student login - force</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -221,10 +230,39 @@
 </div>
 
 <!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <script>
+    // student profiler
+    document.querySelectorAll('.student-login-force').forEach(function(element) {
+        element.addEventListener('click', function(event) {
+            event.preventDefault();
+            var studentId = this.getAttribute('data-id');
+
+            fetch('/store-student-id', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        id: studentId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = '/students/profile';
+                    } else {
+                        alert('Failed to store student ID');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                });
+        });
+    });
+
     // info
     $(document).on('click', '.view-student-info-btn', function() {
         var id = $(this).data('id');
@@ -242,6 +280,7 @@
 
         $('#studentInfoModal').modal('show');
     });
+
     // edit
     $(document).on('click', '.edit-student-btn', function() {
         var id = $(this).data('id');

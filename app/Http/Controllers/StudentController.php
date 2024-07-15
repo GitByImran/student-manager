@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\studentModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -15,6 +17,8 @@ class StudentController extends Controller
         $req->photo->move(public_path('images'), $photo_path);
 
         $table->class = $req->class;
+        $table->username = $req->username;
+        $table->password = Hash::make($req->password);
         $table->name = $req->name;
         $table->age = $req->age;
         $table->gender = $req->gender;
@@ -79,6 +83,95 @@ class StudentController extends Controller
 
         return back()->with('deleteStudentSuccess', "Student deleted");
     }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $credentials = $request->only('username', 'password');
+
+        if (Auth::guard('student')->attempt($credentials)) {
+            return redirect()->intended('students/profile');
+        }
+
+        return redirect()->back()->with('error', 'Invalid credentials.');
+    }
+
+    public function logout()
+    {
+        Auth::guard('student')->logout();
+        return redirect('/studentLogin')->with('success', 'Logged out successfully.');
+    }
+
+    public function showProfile()
+    {
+        $studentId = session('force_student_id');
+
+        if (!$studentId) {
+            $student = Auth::guard('student')->user();
+            if (!$student instanceof studentModel) {
+                return redirect()->back()->with('error', 'Unable to retrieve student data.');
+            }
+        } else {
+            $student = studentModel::findOrFail($studentId);
+            session()->forget('force_student_id');
+        }
+
+        return view('studentProfile', compact('student'));
+    }
+
+
+    public function updateStudentProfile(Request $request)
+    {
+        $student = Auth::guard('student')->user();
+        if (!$student instanceof studentModel) {
+            return redirect()->back()->with('error', 'Unable to retrieve student data.');
+        }
+
+        $student->username = $request->input('username');
+        $student->name = $request->input('name');
+        $student->class = $request->input('class');
+        $student->age = $request->input('age');
+        $student->gender = $request->input('gender');
+
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $filename = time() . '.' . $photo->extension();
+            $photo->move(public_path('images'), $filename);
+            $student->photo = $filename;
+        }
+
+        $student->save();
+        return redirect()->back()->with('updateProfileSuccess', 'Profile updated successfully');
+    }
+
+
+    public function updateStudentPassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        $student = Auth::guard('student')->user();
+        if (!$student instanceof studentModel) {
+            return redirect()->back()->with('error', 'Unable to retrieve student data.');
+        }
+
+        if (Hash::check($request->current_password, $student->password)) {
+            $student->password = Hash::make($request->new_password);
+            $student->save();
+
+            return redirect()->back()->with('updatePasswordSuccess', 'Password updated successfully.');
+        } else {
+            return redirect()->back()->with('updatePasswordError', 'Current password is incorrect.');
+        }
+    }
+
 
 }
 
